@@ -323,5 +323,16 @@ async function work() {
     const newConfigWriter = json5writer.load(configText);
     newConfigWriter.write(config);
     fs.writeFileSync(argv.config, newConfigWriter.toSource(), 'utf-8');
+
+    Log.i(TAG, 'Config file successfully written.');
+    if (data.useDumb) {
+        Log.i(TAG, 'Configured to run in limited \'dumb\' mode.');
+    } else {
+        Log.i(TAG, `Uses ${config.protocol} protocol with host ${config.host} on port ${config.port}.`);
+        if (data.useTls) {
+            Log.i(TAG, `TLS certificate file '${data.tlsCert}'`);
+            Log.i(TAG, `TLS key file '${data.tlsKey}'`);
+        }
+    }
 }
 work().catch(console.log).then(() => rl.close());
